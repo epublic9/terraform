@@ -21,8 +21,13 @@ pipeline {
     stage('Setup GCP Credentials') {
       steps {
         withCredentials([file(credentialsId: 'tf-credentials', variable: 'GCP_CREDS')]) {
-          sh 'cp "$GCP_CREDS" "$GOOGLE_APPLICATION_CREDENTIALS"'
-        }
+  sh '''
+    cp "$GCP_CREDS" ./gcp-creds.json
+    export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/gcp-creds.json
+    export TF_VAR_credentials_file=$(pwd)/gcp-creds.json
+  '''
+}
+
       }
     }
 
