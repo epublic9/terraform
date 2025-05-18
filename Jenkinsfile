@@ -1,33 +1,32 @@
 pipeline {
   agent any
 
-  environment {
-    GOOGLE_APPLICATION_CREDENTIALS = "${WORKSPACE}/gcp-creds.json"
-    TF_VAR_credentials_file = "${WORKSPACE}/gcp-creds.json"
-  }
-
   parameters {
     string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Git branch to build from')
+  }
+
+  environment {
+    GOOGLE_APPLICATION_CREDENTIALS = '/tmp/gcp-creds.json'
+    TF_VAR_credentials_file        = '/tmp/gcp-creds.json'
   }
 
   stages {
     stage('Checkout Code') {
       steps {
         git branch: "${params.BRANCH_NAME}",
-            url: 'https://github.com/epublic9/terraform.git'   // 🔁 Replace this with your repo URL
+            url: 'https://github.com/epublic9/terraform.git' // 🔁 Replace with your repo
       }
     }
 
     stage('Setup GCP Credentials') {
       steps {
         withCredentials([file(credentialsId: 'tf-credentials', variable: 'GCP_CREDS')]) {
-  sh '''
-    cp "$GCP_CREDS" ./gcp-creds.json
-    export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/gcp-creds.json
-    export TF_VAR_credentials_file=$(pwd)/gcp-creds.json
-  '''
-}
-
+          sh '''
+            echo "Copying GCP credentials..."
+            cp "$GCP_CREDS" /tmp/gcp-creds.json
+            chmod 600 /tmp/gcp-creds.json
+          '''
+        }
       }
     }
 
@@ -37,17 +36,24 @@ pipeline {
       }
     }
 
-  stage('Terraform Plan') {
-            steps {
-                sh 'terraform plan -var-file="terraform.tfvars" -out=tfplan'
-            }
-        }
+    stage('Terraform Plan') {
+      steps {
+        sh 'terraform plan -var-file="terraform.tfvars" -out=tfplan'
+      }
+    }
 
-        stage('Terraform Apply') {
-            steps {
-                input message: "Approve apply?"
-                sh 'terraform apply tfplan'
-            }
-        }
+    stage('Terraform Apply') {
+      steps {
+        input message: "Approve apply?"
+        sh 'terraform apply tfplan'
+      }
+    }
+  }
+
+  post {
+    always {
+      echo 'Cleaning up credentials...'
+      sh 'rm -f /tmp/gcp-creds.json'
+    }
   }
 }
