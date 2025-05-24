@@ -38,7 +38,7 @@ pipeline {
 
     stage('Terraform Plan') {
       steps {
-        sh 'terraform plan -var-file="devterraform.tfvars" -out=tfplan'
+        sh 'terraform plan -var-file="devterraform.tfvars" -out=tfplan' -no-color
       }
     }
 
