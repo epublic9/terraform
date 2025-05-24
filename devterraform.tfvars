@@ -16,7 +16,7 @@ api_services = [
 ]
 
 #####################  SERVICE ACCOUNT DETAILS ###################
-appengine_sa_account_name = "appengine_resource"
+appengine_sa_account_name = "appengine-resource"
 appengine_sa_display_name = "appengine service account"
 service_account_description = "created for appegine"
 appengine_sa_roles = ["roles/owner"]
