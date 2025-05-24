@@ -38,17 +38,20 @@ pipeline {
 
     stage('Terraform Plan') {
       steps {
-        sh 'terraform plan -var-file="devterraform.tfvars" -out=tfplan' 
+        sh 'terraform plan -no-color -var-file="devterraform.tfvars" -out=tfplan'
       }
     }
 
     stage('Terraform Apply') {
-      steps {
+  steps {
+    script {
+      timeout(time: 5, unit: 'MINUTES') {
         input message: "Approve apply?"
-        sh 'terraform apply tfplan'
       }
+     sh 'terraform apply -no-color tfplan'
     }
   }
+}
 
   post {
     always {
