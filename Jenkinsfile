@@ -14,7 +14,7 @@ pipeline {
     stage('Checkout Code') {
       steps {
         git branch: "${params.BRANCH_NAME}",
-            url: 'https://github.com/epublic9/terraform.git' // 🔁 Replace with your repo
+            url: 'https://github.com/epublic9/terraform.git'
       }
     }
 
@@ -43,15 +43,16 @@ pipeline {
     }
 
     stage('Terraform Apply') {
-  steps {
-    script {
-      timeout(time: 5, unit: 'MINUTES') {
-        input message: "Approve apply?"
+      steps {
+        script {
+          timeout(time: 5, unit: 'MINUTES') {
+            input message: "Approve apply?"
+          }
+          sh 'terraform apply -no-color tfplan'
+        }
       }
-     sh 'terraform apply -no-color tfplan'
     }
   }
-}
 
   post {
     always {
@@ -59,5 +60,4 @@ pipeline {
       sh 'rm -f /tmp/gcp-creds.json'
     }
   }
-}
 }
