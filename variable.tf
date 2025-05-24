@@ -29,3 +29,7 @@ variable "service_account_description" {
 variable "appengine_sa_display_name" {
   description = "This is display name for service account."
 }
+
+variable "appengine_sa_roles" {
+  description = "assign the roles what do you want."
+}
