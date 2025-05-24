@@ -9,6 +9,7 @@ region             = "us-east1"
 
 api_services = [
   "compute.googleapis.com",
+  "cloudbilling.googleapis.com",
   "iam.googleapis.com",
   "cloudresourcemanager.googleapis.com",
   "servicemanagement.googleapis.com",
