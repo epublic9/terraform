@@ -43,15 +43,18 @@ pipeline {
     }
 
     stage('Terraform Apply') {
-      steps {
-        script {
-          timeout(time: 5, unit: 'MINUTES') {
-            input message: "Approve apply?"
-          }
-          sh 'terraform apply -no-color tfplan'
+  steps {
+    script {
+      if (env.BRANCH_NAME == 'main') {
+        timeout(time: 5, unit: 'MINUTES') {
+          input message: "Approve apply?"
         }
       }
+      sh 'terraform apply -no-color tfplan'
     }
+  }
+}
+
   }
 
   post {
