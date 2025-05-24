@@ -7,13 +7,19 @@ variable "project_name" {
   type        = string
 }
 
+variable "region" {
+  description = "Region"
+  type        = string
+  default     = "us-east1"
+}
+
 variable "billing_account_id" {
   description = "Billing account ID"
   type        = string
 }
 
 #variable "org_id" {
-#  description = "Organization ID"
+ # description = "Organization ID"
 #  type        = string
 #}
 ############################## SERVICE ACCOUNT ################################
@@ -31,5 +37,12 @@ variable "appengine_sa_display_name" {
 }
 
 variable "appengine_sa_roles" {
-  description = "assign the roles what do you want."
+  description = "provide the list roles details you want grant access to SA"
+}
+
+######################## API SERVICES ############################################
+
+variable "api_services" {
+  description = "List of APIs to enable"
+  type        = list(string)
 }
