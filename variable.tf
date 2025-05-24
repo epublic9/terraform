@@ -12,10 +12,10 @@ variable "billing_account_id" {
   type        = string
 }
 
-variable "org_id" {
-  description = "Organization ID"
-  type        = string
-}
+#variable "org_id" {
+#  description = "Organization ID"
+#  type        = string
+#}
 ############################## SERVICE ACCOUNT ################################
 
 variable "appengine_sa_account_name" {
