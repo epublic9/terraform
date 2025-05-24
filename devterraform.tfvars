@@ -1,7 +1,6 @@
 ####################### project details ##########################
 project_id = "pid-usdev-atoberg-s24-res01"
 billing_account_id = "017C00-C2558F-9F2F13"
-org_id =
 project_name       = "My Atomberg"
 region             = "us-east1"
 
